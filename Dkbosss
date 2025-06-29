@@ -1,0 +1,24 @@
+app = Flask(__name__)
+
+# Sample Product List (You can later connect Firebase or Database here)
+products = [
+    {"id": 1, "name": "iPhone 14 Pro", "price": 129999, "img": "https://via.placeholder.com/300x200"},
+    {"id": 2, "name": "Samsung Galaxy S23", "price": 99999, "img": "https://via.placeholder.com/300x200"},
+    {"id": 3, "name": "Realme GT Neo", "price": 25999, "img": "https://via.placeholder.com/300x200"},
+    {"id": 4, "name": "Nothing Phone 2", "price": 44999, "img": "https://via.placeholder.com/300x200"}
+]
+
+@app.route('/')
+def index():
+    return render_template('index.html', products=products)
+
+@app.route('/product/<int:product_id>')
+def product_detail(product_id):
+    product = next((p for p in products if p["id"] == product_id), None)
+    if product:
+        return render_template('product.html', product=product)
+    else:
+        return "Product not found", 404
+
+if __name__ == '__main__':
+    app.run(debug=True)
